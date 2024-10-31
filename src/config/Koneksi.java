@@ -1,41 +1,30 @@
-
 package config;
 
+import com.mysql.cj.jdbc.MysqlDataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 
-import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Koneksi {
-        private static Connection conn;
-    
-public static Connection getConnection() {
-    if (conn == null) {
+    public static Connection Go(){
         try {
-            String url = "jdbc:mysql://localhost:3306/sambatdb";
-            String user = "vv";
-            String pass = "vipas";
+            MysqlDataSource m = new MysqlDataSource();
+            m.setServerName("localhost"); 
+            m.setDatabaseName("sambatdb"); 
+            m.setUser("root"); 
+            m.setPassword(""); 
+            m.setPortNumber(3306); 
+            m.setServerTimezone("Asia/Jakarta"); 
             
-            conn = DriverManager.getConnection(url, user, pass);
-            System.out.println("Database connected successfully.");
+            Connection C = m.getConnection();
+//            System.out.println("Koneksi sukses");
+            return C;
         } catch (SQLException e) {
-            Logger.getLogger(Koneksi.class.getName()).log(Level.SEVERE, "SQL Exception: ", e);
-            System.out.println("Database connection failed: " + e.getMessage());
-        } catch (Exception e) {
-            Logger.getLogger(Koneksi.class.getName()).log(Level.SEVERE, "Unexpected Exception: ", e);
-            System.out.println("An unexpected error occurred: " + e.getMessage());
+            System.err.println("Koneksi Gagal!\n"+
+                    e.getMessage());
         }
-    }
-    return conn;
-}    
-    public static void closeConnection() {
-        if (conn != null) {
-            try {
-                conn.close();
-                System.out.println("Database connection closed.");
-            } catch (SQLException e) {
-                Logger.getLogger(Koneksi.class.getName()).log(Level.SEVERE, "Error closing connection: ", e);
-            }
-        }
+        
+        
+        return null;
     }
 }
