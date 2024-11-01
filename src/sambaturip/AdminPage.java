@@ -4,6 +4,7 @@
  */
 package sambaturip;
 
+import config.Koneksi;
 import java.awt.Frame;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -15,9 +16,13 @@ import javax.swing.table.DefaultTableModel;
 public class AdminPage extends javax.swing.JFrame {
 
     Profile p;
+    static DefaultTableModel m, mod_p;
     
     public AdminPage() {
         initComponents();
+        
+        settingTable();  
+        viewData("");
     }
 
     public AdminPage(Profile P) {
@@ -25,6 +30,8 @@ public class AdminPage extends javax.swing.JFrame {
         
         this.p = P;
         labelUser.setText(p.getFullname() + "(" + p.getLevel() + ")");
+        settingTable();  
+        viewData("");
     }
 
     /**
@@ -42,17 +49,27 @@ public class AdminPage extends javax.swing.JFrame {
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel8 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btnTambah = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtKey = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jPanel9 = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
+        tbluser = new javax.swing.JTable();
+        jPanel11 = new javax.swing.JPanel();
+        jPanel12 = new javax.swing.JPanel();
+        btnTambahProduk = new javax.swing.JButton();
+        btnUbahProduk = new javax.swing.JButton();
+        btnHapusProduk = new javax.swing.JButton();
+        btnRefresh = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        txtKey2 = new javax.swing.JTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblDataProduk = new javax.swing.JTable();
+        jPanel6 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -76,7 +93,7 @@ public class AdminPage extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(labelUser, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(402, Short.MAX_VALUE))
+                .addContainerGap(446, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -97,10 +114,10 @@ public class AdminPage extends javax.swing.JFrame {
 
         jPanel10.setBackground(new java.awt.Color(153, 204, 255));
 
-        jButton1.setText("Tambah");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnTambah.setText("Tambah");
+        btnTambah.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnTambahActionPerformed(evt);
             }
         });
 
@@ -131,12 +148,12 @@ public class AdminPage extends javax.swing.JFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8-search-24.png"))); // NOI18N
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 14, -1, 20));
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtKey.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtKeyActionPerformed(evt);
             }
         });
-        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 170, 30));
+        jPanel2.add(txtKey, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 170, 30));
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -144,14 +161,14 @@ public class AdminPage extends javax.swing.JFrame {
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addComponent(jButton1)
+                .addComponent(btnTambah)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 136, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -162,7 +179,7 @@ public class AdminPage extends javax.swing.JFrame {
                     .addGroup(jPanel10Layout.createSequentialGroup()
                         .addGap(11, 11, 11)
                         .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -174,7 +191,7 @@ public class AdminPage extends javax.swing.JFrame {
 
         jPanel8.add(jPanel10, java.awt.BorderLayout.PAGE_START);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbluser.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -185,37 +202,122 @@ public class AdminPage extends javax.swing.JFrame {
                 "NO", "ID", "NAMA LENGKAP", "USERNAME", "PASSWORD", "ROLE"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbluser);
 
         jPanel8.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         jTabbedPane2.addTab("Data User", jPanel8);
 
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+        jPanel11.setLayout(new java.awt.BorderLayout());
+
+        jPanel12.setBackground(new java.awt.Color(153, 204, 255));
+
+        btnTambahProduk.setText("Tambah");
+        btnTambahProduk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTambahProdukActionPerformed(evt);
+            }
+        });
+
+        btnUbahProduk.setText("Ubah");
+        btnUbahProduk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUbahProdukActionPerformed(evt);
+            }
+        });
+
+        btnHapusProduk.setText("Hapus");
+        btnHapusProduk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusProdukActionPerformed(evt);
+            }
+        });
+
+        btnRefresh.setText("Refresh");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+
+        jPanel5.setBackground(new java.awt.Color(153, 204, 255));
+        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8-search-24.png"))); // NOI18N
+        jPanel5.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 14, -1, 20));
+
+        txtKey2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtKey2ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(txtKey2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 170, 30));
+
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(btnTambahProduk)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnUbahProduk)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnHapusProduk)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnRefresh)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 136, Short.MAX_VALUE)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 484, Short.MAX_VALUE)
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel12Layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnTambahProduk, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnUbahProduk, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnHapusProduk, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel12Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
-        jTabbedPane2.addTab("Data Produk", jPanel9);
+        jPanel11.add(jPanel12, java.awt.BorderLayout.PAGE_START);
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+        tblDataProduk.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "NO", "ID", "KODE PRODUK", "NAMA PRODUK", "GAMBAR", "CATEGORY", "SUPPLIER", "HARGA JUAL", "HARGA BELI", "STOK"
+            }
+        ));
+        jScrollPane3.setViewportView(tblDataProduk);
+
+        jPanel11.add(jScrollPane3, java.awt.BorderLayout.CENTER);
+
+        jTabbedPane2.addTab("Data Produk", jPanel11);
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 644, Short.MAX_VALUE)
         );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 484, Short.MAX_VALUE)
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 495, Short.MAX_VALUE)
         );
 
-        jTabbedPane2.addTab("Data Transaksi", jPanel7);
+        jTabbedPane2.addTab("Data Transaksi", jPanel6);
 
         getContentPane().add(jTabbedPane2, java.awt.BorderLayout.CENTER);
 
@@ -242,29 +344,99 @@ public class AdminPage extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void txtKey2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKey2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtKey2ActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        viewDataProduct(""); 
+    }//GEN-LAST:event_btnRefreshActionPerformed
+
+    private void btnHapusProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusProdukActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnHapusProdukActionPerformed
+
+    private void btnUbahProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahProdukActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnUbahProdukActionPerformed
+
+    private void btnTambahProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahProdukActionPerformed
+        TambahProduk TP = new TambahProduk(this, true);
+        TP.setVisible(true); 
+    }//GEN-LAST:event_btnTambahProdukActionPerformed
+
+    private void txtKeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKeyActionPerformed
+        String key = txtKey.getText();
+        String where = "WHERE "
+        + "fullname LIKE '%" + key + "%' OR "
+        + "username LIKE '%" + key + "%' OR "
+        + "password LIKE '%" + key + "%' OR "
+        + "level LIKE '%" + key + "%'";
+        viewData(where);
+    }//GEN-LAST:event_txtKeyActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        viewData("");
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        int n = tbluser.getSelectedRow();
+        if(n != -1){
+            int id = Integer.parseInt(tbluser.getValueAt(n, 1).toString());
+            String fullname = tbluser.getValueAt(n, 2).toString();
+
+            int opsi = JOptionPane.showConfirmDialog(this,
+                "Apakah Anda yakin ingin menghapus data "+fullname+"?",
+                "Hapus Data",
+                JOptionPane.YES_NO_OPTION);
+            if(opsi == 0){
+                String Q = "DELETE FROM users "
+                + "WHERE id="+id;
+
+                try {
+                    Connection K = Koneksi.Go();
+                    Statement S = K.createStatement();
+                    S.executeUpdate(Q);
+                    viewData("");
+                    JOptionPane.showMessageDialog(this, "Data "+fullname+" telah terhapus");
+                } catch (SQLException e) {
+                }
+            }
+
+        }else {
+            JOptionPane.showMessageDialog(this, "Anda belum memilih data");
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        int n = tbluser.getSelectedRow();
+        if(n != -1){
+            int id = Integer.parseInt(tbluser.getValueAt(n, 1).toString());
+            String fullname = tbluser.getValueAt(n, 2).toString();
+            String username = tbluser.getValueAt(n, 3).toString();
+            String password = tbluser.getValueAt(n, 4).toString();
+            String level = tbluser.getValueAt(n, 5).toString();
+            UbahData U = new UbahData(this, true);
+            U.setIdUser(id);
+            U.setFullname(fullname);
+            U.setUsername(username);
+            U.setPassword(password);
+            U.setLevel(level);
+            U.setVisible(true);
+
+        }else {
+            JOptionPane.showMessageDialog(this, "Anda belum memilih data");
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+        TambahData T = new TambahData(this, true);
+        T.setVisible(true);
+    }//GEN-LAST:event_btnTambahActionPerformed
 
     /**
      * @param args the command line arguments
@@ -302,12 +474,17 @@ public class AdminPage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnHapusProduk;
+    private javax.swing.JButton btnRefresh;
+    private javax.swing.JButton btnTambah;
+    private javax.swing.JButton btnTambahProduk;
+    private javax.swing.JButton btnUbahProduk;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -315,14 +492,112 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel labelUser;
+    private javax.swing.JTable tblDataProduk;
+    private javax.swing.JTable tbluser;
+    private javax.swing.JTextField txtKey;
+    private javax.swing.JTextField txtKey2;
     // End of variables declaration//GEN-END:variables
+    
+    public static void viewData(String where) {
+        try {
+            //kode kita
+            for (int i = m.getRowCount()-1; i >=0; i--) {
+                m.removeRow(i);
+            }
+
+            Connection K = Koneksi.Go();
+            Statement S = K.createStatement();
+            String Q = "SELECT * FROM users " + where;
+//            System.out.println(Q);
+            ResultSet R = S.executeQuery(Q);
+            int no = 1;
+            while (R.next()) {
+                int id = R.getInt("id");
+                String fullname = R.getString("fullname");
+                String username = R.getString("username");
+                String password = R.getString("password");
+                String level = R.getString("level");
+
+                Object[] D = {no, id, fullname, username, password, level};
+                m.addRow(D);
+
+                no++;
+            }
+        } catch (SQLException e) {
+            //error handling
+        }
+    }
+    
+    public static void viewDataProduct(String where) {
+        try {
+            //kode kita
+            for (int i = mod_p.getRowCount()-1; i >=0; i--) {
+                mod_p.removeRow(i);
+            }
+            
+             for (int i = 0; i < mod_p.getRowCount(); i++) {
+                mod_p.removeRow(i);
+            }
+
+            Connection K = Koneksi.Go();
+            Statement S = K.createStatement();
+            String Q = "SELECT * FROM products " + where;
+//            System.out.println(Q);
+            ResultSet R = S.executeQuery(Q);
+            int no = 1;
+            while (R.next()) {
+                int id = R.getInt("id");
+                String p_code = R.getString("product_code");
+                String p_name = R.getString("product_name");
+                String p_image = R.getString("product_image");
+                String p_category  = R.getString("product_category");
+                String p_supplier = R.getString("product_supplier");
+                String p_price_s = R.getString("product_price_s");
+                String p_price_b = R.getString("product_price_s");
+                String p_stock = R.getString("product_stock");
+
+                Object[] D = {
+                    no, id, p_code,p_name, p_image, 
+                    p_category, p_supplier, p_price_s, p_price_b, p_stock};
+                mod_p.addRow(D);
+
+                no++;
+            }
+            Functions.saveLog("Sukses menampilkan data produk"); 
+        } catch (SQLException e) {
+            //error handling
+            Functions.saveLog("Gagal menampilkan data produk. "+e.getMessage()); 
+        }
+    }
+    
+    private void settingTable() {
+        m = (DefaultTableModel) tbluser.getModel();        
+        tbluser.getColumnModel().getColumn(0).setMinWidth(50);
+        tbluser.getColumnModel().getColumn(0).setMaxWidth(70);
+
+        tbluser.getColumnModel().getColumn(1).setMinWidth(0);
+        tbluser.getColumnModel().getColumn(1).setMaxWidth(0);
+
+        tbluser.getColumnModel().getColumn(2).setMinWidth(350);
+        tbluser.getColumnModel().getColumn(2).setMaxWidth(500);
+    
+        
+        mod_p = (DefaultTableModel) tblDataProduk.getModel();        
+        tblDataProduk.getColumnModel().getColumn(0).setMinWidth(50);
+        tblDataProduk.getColumnModel().getColumn(0).setMaxWidth(70);
+
+        tblDataProduk.getColumnModel().getColumn(1).setMinWidth(0);
+        tblDataProduk.getColumnModel().getColumn(1).setMaxWidth(0);      
+    
+    }
 }

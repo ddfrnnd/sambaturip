@@ -49,6 +49,7 @@ public class login extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("JetBrains Mono", 0, 12)); // NOI18N
         jLabel4.setText("Username");
 
+        txtUsername.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtUsername.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         txtUsername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -59,6 +60,7 @@ public class login extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("JetBrains Mono", 0, 12)); // NOI18N
         jLabel5.setText("Password");
 
+        txtPassword.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtPassword.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         txtPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
